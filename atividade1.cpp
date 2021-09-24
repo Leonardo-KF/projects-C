@@ -2,6 +2,7 @@
 #include <string>
 #include <cstring>
 #include <stdio.h>
+#include <stdlib.h>
 
 int main()
 {
@@ -64,6 +65,21 @@ int main()
         }
         else if (x == 3)
         {
+            int compara(carros * a, carros * b)
+            {
+                if (a->AnoFab == b->AnoFab)
+                {
+                    return 0;
                 }
+                else if (a->AnoFab > b->AnoFab)
+                {
+                    return 1;
+                }
+                else
+                {
+                    return -1;
+                }
+            }
+        }
     }
 }
