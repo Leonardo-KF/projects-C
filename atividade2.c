@@ -1,6 +1,4 @@
-#include <iostream>
-#include <string>
-#include <cstring>
+
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -10,15 +8,16 @@ typedef struct
     int anoNasc;
     float gastosM;
 } cliente; // definicao da struct
-cliente clientes[10];
 
 int main()
 {
+    cliente *clientes;
+    clientes = malloc(10 * sizeof(cliente));
+    int tamanho = 10;
     int x = 0;
     int indice = 0;
-    while (true)
+    while (1)
     {
-        int tamanho = (sizeof(clientes) / sizeof(clientes[0]));
         printf("\n=============================================\n");
         printf("            Cadastro de clientes!\n");
         printf("-------< MENU DE OPCOES >-------\n");
@@ -47,7 +46,7 @@ int main()
             int posicao = 0;
             printf("\nDigite o nome do cliente que deseja deletar: ");
             scanf("%s", &nome);
-            for (int i = 0; i < tamanho; i++)
+            for (int i = 0; i < (indice + 1); i++)
             {
                 if (strcmp(nome, clientes[i].nome) == 0)
                 {
@@ -55,13 +54,13 @@ int main()
                     break;
                 }
             }
-            if (posicao == 0)
+            if (posicao == -1)
             {
                 printf("\nNao foi encontrado nenhum cliente com esse NOME!\n");
             }
             else
             {
-                for (int i = posicao; i < tamanho; i++)
+                for (int i = posicao; i < (indice + 1); i++)
                 {
                     clientes[i] = clientes[i + 1];
                 }
@@ -70,12 +69,12 @@ int main()
         }
         else if (x == 3)
         {
-            char nome1[30];
-            int posicao1 = 0;
-            int gastoAd = 0;
+            char nome1[30] = "NULL";
+            int posicao1 = -1;
+            float gastoAd = 0.0;
             printf("\nDigite o nome do cliente que deseja atualizar os gastos: ");
             scanf("%s", &nome1);
-            for (int i = 0; i < tamanho; i++)
+            for (int i = 0; i < (indice + 1); i++)
             {
                 if (strcmp(nome1, clientes[i].nome) == 0)
                 {
@@ -83,7 +82,7 @@ int main()
                     break;
                 }
             }
-            if (posicao1 == 0)
+            if (posicao1 == -1)
             {
                 printf("\nNao foi encontrado nenhum cliente com esse NOME!\n");
             }
@@ -98,10 +97,10 @@ int main()
         else if (x == 4)
         {
             char nome2[30];
-            int posicao2 = 0;
+            int posicao2 = -1;
             printf("\nDigite o nome do cliente que deseja zerar os gastos: ");
-            scanf("%s", &nome2);
-            for (int i = 0; i < tamanho; i++)
+            scanf("%s%*c", nome2);
+            for (int i = 0; i < (indice + 1); i++)
             {
                 if (strcmp(nome2, clientes[i].nome) == 0)
                 {
@@ -109,7 +108,7 @@ int main()
                     break;
                 }
             }
-            if (posicao2 == 0)
+            if (posicao2 == -1)
             {
                 printf("\nNao foi encontrado nenhum cliente com esse NOME!\n");
             }
@@ -122,10 +121,10 @@ int main()
         else if (x == 5)
         {
             char nome3[30];
-            int posicao3 = 0;
-            printf("\nDigite o nome do cliente que deseja deletar: ");
-            scanf("%s", &nome3);
-            for (int i = 0; i < tamanho; i++)
+            int posicao3 = -1;
+            printf("\nDigite o nome do cliente que deseja mostrar os dados: ");
+            scanf("%s%*c", nome3);
+            for (int i = 0; i < (indice + 1); i++)
             {
                 if (strcmp(nome3, clientes[i].nome) == 0)
                 {
@@ -133,7 +132,7 @@ int main()
                     break;
                 }
             }
-            if (posicao3 == 0)
+            if (posicao3 == -1)
             {
                 printf("\nNao foi encontrado nenhum cliente com esse NOME!\n");
             }
@@ -141,15 +140,25 @@ int main()
             {
                 printf("\nNome: %s", clientes[posicao3].nome);
                 printf("\nAno de nascimento: %d", clientes[posicao3].anoNasc);
-                printf("\nValor gasto nesse mes: %.2f", clientes[posicao3].gastosM);
+                printf("\nValor gasto nesse mes: R$%.2f", clientes[posicao3].gastosM);
             }
+        }
+        else
+        {
+            printf("\n Por favor digite uma opção valida!");
         }
         int userR = 0;
         printf("\nDeseja realizar mais alguma operacao? Use 0 para NAO e 1 para SIM: ");
         scanf("%d", &userR);
         if (userR == 0)
         {
+            free(clientes);
             break;
+        }
+        if ((indice + 1) == tamanho)
+        {
+            clientes = realloc(clientes, 10 * sizeof(cliente));
+            tamanho += 10;
         }
     }
 }
